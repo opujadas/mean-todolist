@@ -26,11 +26,15 @@ var TodosComponent = (function () {
         var _this = this;
         var result;
         var newTodo = {
+            _id: '',
             text: todoText.value,
             isCompleted: false
         };
         result = this._todoService.saveTodo(newTodo);
         result.subscribe(function (x) {
+            console.log('add todo!');
+            console.log(x);
+            newTodo._id = x._id;
             _this.todos.push(newTodo);
             todoText.value = '';
         });
@@ -68,6 +72,25 @@ var TodosComponent = (function () {
                 _this.setEditState(todo, false);
             });
         }
+    };
+    TodosComponent.prototype.deleteTodo = function (todo) {
+        console.log('todo recup : ');
+        console.log(todo);
+        var todos = this.todos;
+        this._todoService.deleteTodo(todo._id)
+            .subscribe(function (data) {
+            console.log('retour du service ');
+            console.log(data);
+            if (data.n == 1) {
+                console.log('Retourne 1');
+                for (var i = 0; i < todos.length; i++) {
+                    console.log(todos[i]);
+                    if ((todos[i]._id) && (todos[i]._id == todo._id)) {
+                        todos.splice(i, 1);
+                    }
+                }
+            }
+        });
     };
     TodosComponent = __decorate([
         core_1.Component({

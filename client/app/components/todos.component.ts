@@ -29,12 +29,16 @@ export class TodosComponent implements OnInit
 	{
 		var result; 
 		var newTodo = {
+			_id: '', 
 			text: todoText.value,
 			isCompleted: false
 		};
 
 		result = this._todoService.saveTodo(newTodo);
 		result.subscribe(x => {
+			console.log('add todo!'); 
+			console.log(x);
+			newTodo._id = x._id; 
 			this.todos.push(newTodo)
 			todoText.value = ''; 
 		});
@@ -82,5 +86,36 @@ export class TodosComponent implements OnInit
 				this.setEditState(todo, false); 
 			}); 			
 		}
+	}
+
+	deleteTodo(todo)
+	{
+		console.log('todo recup : ');
+		console.log(todo); 
+
+
+		var todos = this.todos; 
+		this._todoService.deleteTodo(todo._id)
+			.subscribe(data =>
+				{
+					console.log('retour du service ');
+					console.log(data);  
+					
+					if (data.n == 1)
+					{
+						console.log('Retourne 1');
+
+						for(var i=0; i< todos.length; i++)
+						{
+							console.log(todos[i]);
+						
+							if ((todos[i]._id) && (todos[i]._id == todo._id))
+							{
+								todos.splice(i, 1);
+							}
+						}
+					}
+				});
+		
 	}
 }

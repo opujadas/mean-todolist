@@ -22,7 +22,7 @@
 	</div>
 
 	<div class="col-md-4 btns">
-			<input type="button" class="btn btn-danger pull-right" value="delete">
+			<input (click)="deleteTodo(todo)" type="button" class="btn btn-danger pull-right" value="delete">
 			<input [class.disabled]="todo.isCompleted" (click)="setEditState(todo, true)" type="button" class="btn btn-default pull-right" value="edit">
 	</div>
 </div>
